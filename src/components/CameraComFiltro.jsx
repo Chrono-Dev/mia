@@ -1,7 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const CameraComFiltro = () => {
   const [fotoFinal, setFotoFinal] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const inputFileRef = useRef(null);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+    };
+    setIsMobile(checkMobile());
+  }, []);
 
   const uploadImagem = (e) => {
     const file = e.target.files[0];
@@ -58,20 +69,25 @@ const CameraComFiltro = () => {
     };
   };
 
-  // TELA DE RESULTADO
+  const compartilharNoStory = () => {
+    // Força download da imagem
+    const link = document.createElement("a");
+    link.href = fotoFinal;
+    link.download = "foto-com-filtro.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Tenta abrir Instagram no celular
+    const urlScheme = "instagram://story-camera";
+    const newWindow = window.open(urlScheme, "_blank");
+
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
+      alert("Abra o Instagram no seu celular e poste a foto manualmente.");
+    }
+  };
+
   if (fotoFinal) {
-    const instagramUser = "expoexample"; // trocar para o @ da exposição
-
-    const compartilharNoStory = () => {
-      // Tenta abrir o app Instagram Stories no mobile com esquema URI (não garante upload da imagem)
-      const urlScheme = `instagram://story-camera`;
-      // Link web para abrir Instagram com o usuário marcado no perfil
-      const webLink = `https://www.instagram.com/stories/create/story/?source_url=${encodeURIComponent(fotoFinal)}`;
-
-      // Tenta abrir o app (funciona no mobile com Instagram instalado)
-      window.open(urlScheme, "_blank") || window.open(webLink, "_blank");
-    };
-
     return (
       <div
         style={{
@@ -89,23 +105,26 @@ const CameraComFiltro = () => {
           style={{ width: "100%", borderRadius: 8 }}
         />
 
-        <button
-          onClick={compartilharNoStory}
-          style={{
-            marginTop: 20,
-            width: "100%",
-            padding: "10px 0",
-            fontWeight: "bold",
-            fontSize: 16,
-            backgroundColor: "#E1306C", // cor do Instagram
-            color: "white",
-            border: "none",
-            borderRadius: 8,
-            cursor: "pointer",
-          }}
-        >
-          Compartilhar no Story
-        </button>
+        {/* Só mostra o botão se for mobile */}
+        {isMobile && (
+          <button
+            onClick={compartilharNoStory}
+            style={{
+              marginTop: 20,
+              width: "100%",
+              padding: "10px 0",
+              fontWeight: "bold",
+              fontSize: 16,
+              backgroundColor: "#E1306C",
+              color: "white",
+              border: "none",
+              borderRadius: 8,
+              cursor: "pointer",
+            }}
+          >
+            Compartilhar no Story
+          </button>
+        )}
 
         <a
           href={fotoFinal}
@@ -123,11 +142,28 @@ const CameraComFiltro = () => {
         >
           Baixar Foto
         </a>
+
+        <button
+          onClick={() => setFotoFinal(null)}
+          style={{
+            marginTop: 20,
+            width: "100%",
+            padding: "10px 0",
+            fontWeight: "bold",
+            fontSize: 16,
+            backgroundColor: "#444",
+            color: "white",
+            border: "none",
+            borderRadius: 8,
+            cursor: "pointer",
+          }}
+        >
+          Tirar outra foto
+        </button>
       </div>
     );
   }
 
-  // TELA INICIAL
   return (
     <div
       style={{
@@ -139,18 +175,37 @@ const CameraComFiltro = () => {
         textAlign: "center",
       }}
     >
-      <p style={{ marginBottom: 8 }}>Veja como ficará sua foto:</p>
+      <p style={{ marginTop: 1 }}>Veja como ficará sua foto:</p>
       <img
         src={process.env.PUBLIC_URL + "/pic.png"}
         alt="Exemplo da moldura"
         style={{ width: "100%", borderRadius: 8, marginBottom: 16 }}
       />
+
       <input
         type="file"
         accept="image/*"
         onChange={uploadImagem}
-        style={{ width: "100%" }}
+        ref={inputFileRef}
+        style={{ display: "none" }}
       />
+
+      <button
+        onClick={() => inputFileRef.current && inputFileRef.current.click()}
+        style={{
+          width: "100%",
+          padding: "10px 0",
+          fontWeight: "bold",
+          fontSize: 16,
+          backgroundColor: "#E1306C",
+          color: "white",
+          border: "none",
+          borderRadius: 8,
+          cursor: "pointer",
+        }}
+      >
+        Escolher imagem
+      </button>
     </div>
   );
 };
