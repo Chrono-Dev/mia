@@ -49,7 +49,7 @@ const CameraComFiltro = () => {
       ctx.restore();
 
       const moldura = new Image();
-      moldura.src = "/pic.png";
+      moldura.src = process.env.PUBLIC_URL + "/pic.png";
       moldura.onload = () => {
         ctx.drawImage(moldura, 0, 0, canvas.width, canvas.height);
         const fotoMesclada = canvas.toDataURL("image/png");
@@ -141,7 +141,7 @@ const CameraComFiltro = () => {
     >
       <p style={{ marginBottom: 8 }}>Veja como ficará sua foto:</p>
       <img
-        src="/pic.png"
+        src={process.env.PUBLIC_URL + "/pic.png"}
         alt="Exemplo da moldura"
         style={{ width: "100%", borderRadius: 8, marginBottom: 16 }}
       />
