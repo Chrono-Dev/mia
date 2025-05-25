@@ -133,7 +133,7 @@ const CameraComFiltro = () => {
               padding: "10px 0",
               fontWeight: "bold",
               fontSize: 16,
-              backgroundColor: "#E1306C",
+              backgroundColor: "#f4c531",
               color: "white",
               border: "none",
               borderRadius: 8,

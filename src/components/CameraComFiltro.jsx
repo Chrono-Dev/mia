@@ -34,7 +34,7 @@ const CameraComFiltro = () => {
     img.crossOrigin = "anonymous";
     img.src = src;
     img.onload = () => {
-      const hole = { x: 110, y: 750, width: 375, height: 475 };
+      const hole = { x: 110, y: 730, width: 375, height: 475 };
 
       const imgAspect = img.width / img.height;
       const holeAspect = hole.width / hole.height;
@@ -115,7 +115,7 @@ const CameraComFiltro = () => {
               padding: "10px 0",
               fontWeight: "bold",
               fontSize: 16,
-              backgroundColor: "#E1306C",
+              backgroundColor: "#f4c531",
               color: "white",
               border: "none",
               borderRadius: 8,
