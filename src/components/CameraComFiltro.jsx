@@ -59,6 +59,20 @@ const CameraComFiltro = () => {
       ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
       ctx.restore();
 
+      // Converte imagem desenhada em preto e branco com contraste
+      const imageData = ctx.getImageData(hole.x, hole.y, hole.width, hole.height);
+      const data = imageData.data;
+      const contrast = 1; // ajuste o valor para mais ou menos contraste
+
+      for (let i = 0; i < data.length; i += 4) {
+        const avg = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]; // luminância
+        let adjusted = (avg - 128) * contrast + 128;
+        adjusted = Math.max(0, Math.min(255, adjusted));
+        data[i] = data[i + 1] = data[i + 2] = adjusted;
+      }
+
+      ctx.putImageData(imageData, hole.x, hole.y);
+
       const moldura = new Image();
       moldura.src = process.env.PUBLIC_URL + "/pic.png";
       moldura.onload = () => {
