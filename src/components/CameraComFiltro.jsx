@@ -172,7 +172,7 @@ const CameraComFiltro = () => {
             cursor: "pointer",
           }}
         >
-          Tirar outra foto
+          Escolher outra foto
         </button>
       </div>
     );

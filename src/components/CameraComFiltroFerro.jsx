@@ -71,7 +71,7 @@ const CameraComFiltro = () => {
 
       // Aplica camada azul com blend e opacidade
       ctx.save();
-      ctx.globalAlpha = 0.5;
+      ctx.globalAlpha = 0.25;
       ctx.globalCompositeOperation = "sof-light";
       ctx.fillStyle = "#004094";
       ctx.fillRect(hole.x, hole.y, hole.width, hole.height);
@@ -176,7 +176,7 @@ const CameraComFiltro = () => {
             cursor: "pointer",
           }}
         >
-          Tirar outra foto
+          Escolher outra foto
         </button>
       </div>
     );
