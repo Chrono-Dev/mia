@@ -72,7 +72,7 @@ const CameraComFiltro = () => {
       // Aplica camada azul com blend e opacidade
       ctx.save();
       ctx.globalAlpha = 0.5;
-      ctx.globalCompositeOperation = "hard-light";
+      ctx.globalCompositeOperation = "sof-light";
       ctx.fillStyle = "#004094";
       ctx.fillRect(hole.x, hole.y, hole.width, hole.height);
       ctx.restore();
